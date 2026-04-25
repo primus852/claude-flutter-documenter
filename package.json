@@ -1,6 +1,6 @@
 {
   "name": "claude-flutter-documenter",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Claude Code plugin to generate end-user Markdown manuals from Flutter codebases",
   "main": "bin/documenter.cjs",
   "type": "commonjs",
