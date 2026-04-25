@@ -176,6 +176,22 @@ Flags passed to `/document` always override saved values.
 
 ---
 
+## Update notifications
+
+flutter-doc checks for a newer GitHub release at the start of every `/flutter-doc:document` run and prints a one-line notice if one is available.
+
+For a persistent **statusline** indicator (like `/gsd-update` shows), add this to your project's `.claude/settings.json`:
+
+```json
+{
+  "statusCommand": "PLUGIN_ROOT=~/claude-flutter-documenter ~/claude-flutter-documenter/scripts/check-update.sh"
+}
+```
+
+Replace `~/claude-flutter-documenter` with the path to your local plugin checkout. The statusline will show `flutter-doc vX.Y.Z available → /plugin update flutter-doc` whenever a new release is out, and nothing when you're current.
+
+---
+
 ## Development
 
 ```bash

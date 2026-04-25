@@ -4,7 +4,22 @@ This is the 6-step orchestration workflow executed by `commands/document.md`.
 
 ---
 
-## Step 0 — Parse arguments
+## Step 0 — Update check
+
+Run silently in the background before anything else:
+
+```bash
+PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT}" "${CLAUDE_PLUGIN_ROOT}/scripts/check-update.sh"
+```
+
+If it prints output, show it as a one-line notice at the top of the response, e.g.:
+> `💡 flutter-doc v0.3.0 available → /plugin update flutter-doc`
+
+Never block or fail if the script errors — proceed regardless.
+
+---
+
+## Step 1 — Parse arguments
 
 Extract from `$ARGUMENTS`:
 - `AUDIENCE` — `end-user` (default) | `admin` | `power-user`
