@@ -1,6 +1,6 @@
 # /document — Main Workflow
 
-This is the 7-step orchestration workflow executed by `commands/document.md`.
+This is the 6-step orchestration workflow executed by `commands/document.md`.
 
 ---
 
@@ -8,9 +8,7 @@ This is the 7-step orchestration workflow executed by `commands/document.md`.
 
 Extract from `$ARGUMENTS`:
 - `AUDIENCE` — `end-user` (default) | `admin` | `power-user`
-- `FORMAT` — `md` | `pdf` | `latex` | `html` | `all` (default: `all`)
-- `STYLE` — `typst` (default) | `eisvogel`
-- `SOURCE_DIR` — value of `--src <path>` flag (optional). A path relative to `TARGET_ROOT` that pins exactly which subfolder to analyze (e.g. `lib`, `frontend/src`, `app`). When omitted, auto-detection picks the source root.
+- `SOURCE_DIR` — value of `--src <path>` flag (optional). A path relative to `TARGET_ROOT` that pins exactly which subfolder to analyze (e.g. `lib`). When omitted, auto-detection picks the source root.
 
 ---
 
@@ -18,18 +16,13 @@ Extract from `$ARGUMENTS`:
 
 Read the current working directory (the project the user has open in Claude Code).
 
-1. Check for `package.json` → web project (note `name` field as PROJECT_NAME).
-2. Check for `pubspec.yaml` → Flutter project (note `name` field as PROJECT_NAME).
-3. Check for both → mixed project (rare; treat as `both`).
-4. If neither exists, ask:
-   > "I can't automatically detect the project type. Is this a web app or Flutter app?"
-   
-   Use `AskUserQuestion`.
+1. Check for `pubspec.yaml` → Flutter project. Note the `name` field as `PROJECT_NAME` and `description` as `PROJECT_DESCRIPTION`.
+2. If `pubspec.yaml` is absent, abort:
+   > "No pubspec.yaml found. claude-flutter-documenter only supports Flutter projects. Please run this command from the root of a Flutter project."
 
-Set `PROJECT_TYPE` = `web` | `flutter` | `both`.
 Set `TARGET_ROOT` = current working directory.
 Set `DOCS_DIR` = `TARGET_ROOT/.documenter/`.
-Set `SOURCE_DIR` = `TARGET_ROOT/<--src value>` if provided, else `TARGET_ROOT` (analyzers will auto-detect the framework subfolder within it).
+Set `SOURCE_DIR` = `TARGET_ROOT/<--src value>` if provided, else `TARGET_ROOT`.
 
 ---
 
@@ -38,29 +31,29 @@ Set `SOURCE_DIR` = `TARGET_ROOT/<--src value>` if provided, else `TARGET_ROOT` (
 1. Create `.documenter/` directory structure if not present:
    ```
    .documenter/analysis/
-   .documenter/screenshots/web/
-   .documenter/screenshots/flutter/
+   .documenter/screenshots/
    .documenter/diagrams/
-   .documenter/dist/
+   .documenter/manual/chapters/
+   .documenter/manual/journeys/
    ```
 
 2. Load or create `.documenter/config.json`:
    ```json
    {
      "projectName": "<PROJECT_NAME>",
-     "projectType": "<PROJECT_TYPE>",
      "sourceDir": "<SOURCE_DIR relative to TARGET_ROOT, or empty string>",
      "audience": "<AUDIENCE>",
-     "formats": ["md", "pdf", "latex", "html"],
-     "style": "typst",
      "version": "1.0",
+     "contactEmail": "support@example.com",
+     "contactUrl": "https://help.example.com",
+     "locale": "en",
      "createdAt": "<ISO date>",
      "updatedAt": "<ISO date>"
    }
    ```
    If file already exists, merge with any flags from `$ARGUMENTS` (flags win). Once `sourceDir` is saved, it becomes the default for all future runs on this project — no need to pass `--src` again.
 
-3. Print: "▶ Documenting **<PROJECT_NAME>** (<PROJECT_TYPE>) for audience: **<AUDIENCE>**"
+3. Print: "▶ Documenting **<PROJECT_NAME>** for audience: **<AUDIENCE>**"
 
 ---
 
@@ -68,7 +61,6 @@ Set `SOURCE_DIR` = `TARGET_ROOT/<--src value>` if provided, else `TARGET_ROOT` (
 
 Spawn `code-cartographer` agent with:
 - `TARGET_ROOT`
-- `PROJECT_TYPE`
 - `SOURCE_DIR` — the pinned subfolder to analyze (pass `""` if not set)
 - `OUTPUT_DIR` = `DOCS_DIR/analysis/`
 
@@ -83,7 +75,7 @@ Confirm: "✓ Analysis complete — N routes, M journeys found."
 Spawn `screenshot-orchestrator` agent with:
 - `TARGET_ROOT`
 - `DOCS_DIR`
-- `PROJECT_TYPE`
+- `PLUGIN_ROOT` = `${CLAUDE_PLUGIN_ROOT}`
 
 This step is optional — if the user declines or no device is available, continue with a warning.
 
@@ -97,7 +89,7 @@ Spawn `diagram-designer` agent with:
 - `DOCS_DIR`
 - `PLUGIN_ROOT` = `${CLAUDE_PLUGIN_ROOT}`
 
-This step is optional — if `mmdc` is not installed, continue without diagrams.
+This step is optional — if `mmdc` is not installed, `.mmd` source files are still written and will render as fenced mermaid blocks in the manual.
 
 Confirm: "✓ Diagrams: N generated."
 
@@ -112,33 +104,21 @@ Spawn `manual-drafter` agent with:
 - `PROJECT_NAME`
 - `PLUGIN_ROOT` = `${CLAUDE_PLUGIN_ROOT}`
 
-Wait for completion. This produces `DOCS_DIR/manual.md`.
-
-Confirm: "✓ Manual drafted — N chapters."
-
----
-
-## Step 7 — Render to formats
-
-Run via Bash using `bin/documenter.cjs render`:
-
-```bash
-cd TARGET_ROOT/.documenter && \
-  node ${CLAUDE_PLUGIN_ROOT}/bin/documenter.cjs render manual.md <FORMAT> <STYLE>
-```
-
-This produces one or more files in `DOCS_DIR/dist/`.
+Wait for completion. This produces the `DOCS_DIR/manual/` folder.
 
 Print the final summary:
 ```
-✓ Done! Your manual is ready:
+✓ Done! Your manual is ready at .documenter/manual/:
 
-  📄  .documenter/manual.md
-  📕  .documenter/dist/manual.pdf
-  📗  .documenter/dist/manual-eisvogel.pdf   (if eisvogel style)
-  📝  .documenter/dist/manual.tex
-  🌐  .documenter/dist/manual.html
+  📘  index.md                 — start here
+  📂  chapters/                — N feature chapters
+  📂  journeys/                — M how-to walkthroughs
+  🛠   troubleshooting.md
+  📞  getting-help.md
 
-▶ Next: Open manual.pdf, review for accuracy, then run
+Open .documenter/manual/index.md in any Markdown viewer
+(GitHub, VS Code, Obsidian) and click through the links.
+
+▶ Next: review for accuracy, then run
   /documenter-do "update the <chapter> chapter" to refine any section.
 ```

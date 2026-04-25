@@ -1,12 +1,8 @@
 {
   "projectName": "",
-  "projectType": "web",
   "sourceDir": "",
   "audience": "end-user",
-  "formats": ["md", "pdf", "latex", "html"],
-  "style": "typst",
   "version": "1.0",
-  "baseUrl": "http://localhost:3000",
   "contactEmail": "support@example.com",
   "contactUrl": "https://help.example.com",
   "locale": "en",

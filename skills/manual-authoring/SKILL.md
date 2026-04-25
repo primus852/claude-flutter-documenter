@@ -4,7 +4,7 @@ description: "Procedural knowledge for writing end-user manuals. Use this skill 
 version: 0.1.0
 ---
 
-This skill carries the style rules, structural templates, and writing heuristics for producing consistent, high-quality end-user manuals with claude-documenter.
+This skill carries the style rules, structural templates, and writing heuristics for producing consistent, high-quality end-user manuals with claude-flutter-documenter.
 
 ## When drafting manual content, always:
 

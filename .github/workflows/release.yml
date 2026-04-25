@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  validate-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed to create GitHub Releases
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: tag
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Validate version consistency
+        run: |
+          TAG_VERSION="${{ steps.tag.outputs.version }}"
+
+          VERSION_FILE="$(cat VERSION | tr -d '[:space:]')"
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          PLUGIN_VERSION="$(node -p "require('./.claude-plugin/plugin.json').version")"
+
+          echo "Tag:        $TAG_VERSION"
+          echo "VERSION:    $VERSION_FILE"
+          echo "package:    $PKG_VERSION"
+          echo "plugin.json: $PLUGIN_VERSION"
+
+          FAIL=0
+          [[ "$VERSION_FILE"  != "$TAG_VERSION" ]] && echo "❌ VERSION file mismatch"    && FAIL=1
+          [[ "$PKG_VERSION"   != "$TAG_VERSION" ]] && echo "❌ package.json mismatch"    && FAIL=1
+          [[ "$PLUGIN_VERSION" != "$TAG_VERSION" ]] && echo "❌ plugin.json mismatch"    && FAIL=1
+
+          if [[ $FAIL -eq 1 ]]; then
+            echo ""
+            echo "Run scripts/bump-version.sh $TAG_VERSION before tagging."
+            exit 1
+          fi
+          echo "✓ All version fields match $TAG_VERSION"
+
+      - name: Validate JSON files
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('.claude-plugin/plugin.json'))"
+          node -e "JSON.parse(require('fs').readFileSync('.claude-plugin/marketplace.json'))"
+          node -e "JSON.parse(require('fs').readFileSync('package.json'))"
+          node -e "JSON.parse(require('fs').readFileSync('templates/config.json'))"
+          echo "✓ All JSON files valid"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          body_prefix: |
+            ## Install
+
+            ```
+            /plugin marketplace add https://github.com/${{ github.repository }}
+            /plugin install claude-flutter-documenter
+            ```
+
+            If you already have it installed:
+            ```
+            /plugin update claude-flutter-documenter
+            ```
+
+            ---
