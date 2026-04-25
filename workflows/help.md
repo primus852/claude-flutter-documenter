@@ -4,19 +4,19 @@ Print this reference verbatim.
 
 ---
 
-## claude-flutter-documenter — Command Reference
+## flutter-doc — Command Reference
 
 ### Commands
 
 | Command | Description |
 |---------|-------------|
-| `/document` | Full pipeline: analyze → screenshots → diagrams → draft |
-| `/document end-user` | Full pipeline, audience = end-user (default) |
-| `/document admin` | Full pipeline, audience = admin |
-| `/document power-user` | Full pipeline, audience = power-user |
-| `/document --src lib` | Scope analysis to a specific subfolder |
-| `/documenter-do "<text>"` | Route a freeform request to the right sub-workflow |
-| `/documenter-help` | Show this reference |
+| `/flutter-doc:document` | Full pipeline: analyze → screenshots → diagrams → draft |
+| `/flutter-doc:document end-user` | Full pipeline, audience = end-user (default) |
+| `/flutter-doc:document admin` | Full pipeline, audience = admin |
+| `/flutter-doc:document power-user` | Full pipeline, audience = power-user |
+| `/flutter-doc:document --src lib` | Scope analysis to a specific subfolder |
+| `/flutter-doc:do "<text>"` | Route a freeform request to the right sub-workflow |
+| `/flutter-doc:help` | Show this reference |
 
 ### Audience options
 

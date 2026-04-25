@@ -36,7 +36,7 @@ All output lands in `.documenter/` inside your project and opens without any bui
 
 ```bash
 /plugin marketplace add https://github.com/primus852/claude-flutter-documenter
-/plugin install claude-flutter-documenter
+/plugin install flutter-doc
 ```
 
 ### 2. Install optional system dependencies
@@ -76,13 +76,13 @@ The plugin walks through six steps automatically:
 ## Usage
 
 ```
-/document                           # guided run, auto-detects Flutter project
-/document end-user                  # audience = end-user (default)
-/document admin                     # audience = admin
-/document power-user                # audience = power-user
-/document --src lib/features/auth   # scope analysis to a subfolder
-/documenter-help                    # full command reference
-/documenter-do "update the settings chapter"   # freeform refinement
+/flutter-doc:document                           # guided run, auto-detects Flutter project
+/flutter-doc:document end-user                  # audience = end-user (default)
+/flutter-doc:document admin                     # audience = admin
+/flutter-doc:document power-user                # audience = power-user
+/flutter-doc:document --src lib/features/auth   # scope analysis to a subfolder
+/flutter-doc:help                               # full command reference
+/flutter-doc:do "update the settings chapter"   # freeform refinement
 ```
 
 ### Audience modes
@@ -137,9 +137,9 @@ Open `.documenter/manual/index.md` in any Markdown viewer — all internal links
 
 | Command | Description |
 |---------|-------------|
-| `/document [audience] [--src path]` | Full pipeline: analyze → screenshot → diagram → draft |
-| `/documenter-help` | Prints all commands, options, and output structure |
-| `/documenter-do "<text>"` | Routes a freeform request to the right sub-workflow |
+| `/flutter-doc:document [audience] [--src path]` | Full pipeline: analyze → screenshot → diagram → draft |
+| `/flutter-doc:help` | Prints all commands, options, and output structure |
+| `/flutter-doc:do "<text>"` | Routes a freeform request to the right sub-workflow |
 
 ---
 

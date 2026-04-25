@@ -1,5 +1,5 @@
 {
-  "name": "claude-flutter-documenter",
+  "name": "flutter-doc",
   "version": "0.2.0",
   "description": "Generate end-user manuals (Markdown) with screenshots and flowcharts from Flutter codebases.",
   "author": {

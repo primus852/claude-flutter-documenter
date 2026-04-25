@@ -9,7 +9,7 @@
   },
   "plugins": [
     {
-      "name": "claude-flutter-documenter",
+      "name": "flutter-doc",
       "description": "Generate end-user manuals (Markdown) with screenshots and flowcharts from Flutter codebases.",
       "source": "./",
       "category": "documentation"
