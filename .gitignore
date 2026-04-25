@@ -1,6 +1,4 @@
 node_modules/
 .documenter/
-*.pdf
-*.tex
-dist/
 .DS_Store
+.idea/

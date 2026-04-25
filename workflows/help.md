@@ -4,37 +4,19 @@ Print this reference verbatim.
 
 ---
 
-## claude-documenter — Command Reference
+## claude-flutter-documenter — Command Reference
 
 ### Commands
 
 | Command | Description |
 |---------|-------------|
-| `/document` | Full pipeline: analyze → screenshots → diagrams → draft → render |
+| `/document` | Full pipeline: analyze → screenshots → diagrams → draft |
 | `/document end-user` | Full pipeline, audience = end-user (default) |
 | `/document admin` | Full pipeline, audience = admin |
 | `/document power-user` | Full pipeline, audience = power-user |
-| `/document --format pdf` | Render PDF only (skip other formats) |
-| `/document --format all --style eisvogel` | All formats with Eisvogel PDF styling |
+| `/document --src lib` | Scope analysis to a specific subfolder |
 | `/documenter-do "<text>"` | Route a freeform request to the right sub-workflow |
 | `/documenter-help` | Show this reference |
-
-### Format options
-
-| Flag | Output |
-|------|--------|
-| `--format md` | `manual.md` only |
-| `--format pdf` | `dist/manual.pdf` (Typst, default) |
-| `--format latex` | `dist/manual.tex` + `dist/manual-eisvogel.pdf` |
-| `--format html` | `dist/manual.html` |
-| `--format all` | All of the above (default) |
-
-### Style options
-
-| Flag | Description |
-|------|-------------|
-| `--style typst` | Fast PDF via Pandoc + Typst (~2s) — default |
-| `--style eisvogel` | Polished PDF via Pandoc + xelatex + Eisvogel template (~30s) |
 
 ### Audience options
 
@@ -52,10 +34,15 @@ All artifacts land in `<your-project>/.documenter/`:
 ├── analysis/routes.json
 ├── analysis/journeys.json
 ├── analysis/manifest.yaml
-├── screenshots/{web,flutter}/
-├── diagrams/*.svg
-├── manual.md
-└── dist/{manual.pdf, manual-eisvogel.pdf, manual.tex, manual.html}
+├── screenshots/<route-id>.png
+├── diagrams/<journey-id>.mmd
+├── diagrams/<journey-id>.svg      (if mmdc is installed)
+└── manual/
+    ├── index.md                   ← start here
+    ├── chapters/<chapter-id>.md
+    ├── journeys/<journey-id>.md
+    ├── troubleshooting.md
+    └── getting-help.md
 ```
 
 ### Config file
@@ -64,24 +51,24 @@ All artifacts land in `<your-project>/.documenter/`:
 ```json
 {
   "projectName": "My App",
-  "projectType": "web",
   "audience": "end-user",
-  "formats": ["md", "pdf", "latex", "html"],
-  "style": "typst",
-  "version": "1.0"
+  "version": "1.0",
+  "contactEmail": "support@example.com",
+  "contactUrl": "https://help.example.com"
 }
 ```
 
 ### System dependencies
 
 ```bash
-brew install pandoc typst mermaid-cli
-brew install --cask basictex   # for eisvogel/xelatex
-npm install                    # in claude-documenter repo
+brew install mermaid-cli   # optional — enables SVG diagram rendering
+npm install                # in claude-flutter-documenter repo
 ```
 
-Run `${CLAUDE_PLUGIN_ROOT}/scripts/install-deps.sh` to install everything automatically.
+Run `${CLAUDE_PLUGIN_ROOT}/scripts/install-deps.sh` to install automatically.
+
+Flutter itself must be installed separately: https://docs.flutter.dev/get-started/install
 
 ### Support
 
-File issues: https://github.com/torstenwolter/claude-documenter/issues
+File issues: https://github.com/primus852/claude-flutter-documenter/issues

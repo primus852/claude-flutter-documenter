@@ -14,10 +14,9 @@ Parse the user's freeform text (`$ARGUMENTS`) and route to the best-matching sub
 | "screenshot", "capture", "photo", "re-take" | Run `screenshot-orchestrator` agent only |
 | "diagram", "flowchart", "chart", "redraw" | Run `diagram-designer` agent only |
 | "chapter", "section", "update", "rewrite", "add", "fix prose" | Run `manual-drafter` agent with targeted chapter |
-| "render", "PDF", "LaTeX", "export", "generate PDF" | Run Step 7 of `document.md` (render only) |
 | "analyze", "re-analyze", "routes", "re-scan" | Run Step 3 of `document.md` (code-cartographer only) |
-| "full run", "redo everything", "start over" | Run all 7 steps of `document.md` |
-| unclear | Ask: "What would you like to update? (screenshots / diagrams / a chapter / re-render / full run)" |
+| "full run", "redo everything", "start over" | Run all 6 steps of `document.md` |
+| unclear | Ask: "What would you like to update? (screenshots / diagrams / a chapter / full run)" |
 
 ---
 

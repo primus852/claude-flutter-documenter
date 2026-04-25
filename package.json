@@ -1,25 +1,18 @@
 {
-  "name": "claude-documenter",
+  "name": "claude-flutter-documenter",
   "version": "0.1.0",
-  "description": "Claude Code plugin to generate end-user manuals from codebases",
+  "description": "Claude Code plugin to generate end-user Markdown manuals from Flutter codebases",
   "main": "bin/documenter.cjs",
   "type": "commonjs",
   "scripts": {
-    "install-deps": "scripts/install-deps.sh",
-    "postinstall": "npx playwright install --with-deps chromium"
+    "install-deps": "scripts/install-deps.sh"
   },
   "bin": {
     "documenter": "./bin/documenter.cjs"
   },
   "dependencies": {
-    "@babel/parser": "^7.24.0",
-    "@babel/traverse": "^7.24.0",
     "js-yaml": "^4.1.0",
-    "glob": "^10.4.0",
     "minimist": "^1.2.8"
-  },
-  "devDependencies": {
-    "@playwright/test": "^1.44.0"
   },
   "engines": {
     "node": ">=18.0.0"

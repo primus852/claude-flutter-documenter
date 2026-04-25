@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate JSON files
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('.claude-plugin/plugin.json'))"
+          node -e "JSON.parse(require('fs').readFileSync('.claude-plugin/marketplace.json'))"
+          node -e "JSON.parse(require('fs').readFileSync('package.json'))"
+          node -e "JSON.parse(require('fs').readFileSync('templates/config.json'))"
+          echo "✓ All JSON files valid"
+
+      - name: Validate version consistency across files
+        run: |
+          VERSION_FILE="$(cat VERSION | tr -d '[:space:]')"
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          PLUGIN_VERSION="$(node -p "require('./.claude-plugin/plugin.json').version")"
+
+          echo "VERSION:     $VERSION_FILE"
+          echo "package.json: $PKG_VERSION"
+          echo "plugin.json:  $PLUGIN_VERSION"
+
+          if [[ "$VERSION_FILE" != "$PKG_VERSION" || "$PKG_VERSION" != "$PLUGIN_VERSION" ]]; then
+            echo "❌ Version fields are out of sync — run scripts/bump-version.sh <version>"
+            exit 1
+          fi
+          echo "✓ Versions consistent: $VERSION_FILE"
+
+      - name: Check CLI loads cleanly
+        run: node bin/documenter.cjs help

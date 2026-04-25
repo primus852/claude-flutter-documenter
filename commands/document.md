@@ -1,6 +1,6 @@
 ---
-description: Generate an end-user manual for the current project (web or Flutter). Use this command when the user says "generate docs", "create a manual", "document this project", "write a user guide", or "make a PDF manual". Runs the full pipeline: code analysis → screenshots → diagrams → prose drafting → multi-format rendering.
-argument-hint: "[end-user|admin|power-user] [--format md|pdf|latex|html|all] [--style typst|eisvogel] [--src <relative-path>]"
+description: Generate an end-user manual for the current Flutter project. Use this command when the user says "generate docs", "create a manual", "document this project", or "write a user guide". Runs the full pipeline: code analysis → screenshots → diagrams → prose drafting. Output is a folder of cross-linked Markdown files.
+argument-hint: "[end-user|admin|power-user] [--src <relative-path>]"
 allowed-tools: Read, Grep, Glob, Bash, Write, Task, AskUserQuestion
 model: sonnet
 ---
