@@ -3,9 +3,14 @@
 const fs = require('fs');
 const path = require('path');
 
-async function run([targetRoot]) {
+async function run(args) {
+  // Parse: analyze-flutter <root> [--src <subdir>]
+  const srcFlagIdx = args.indexOf('--src');
+  const srcFlag = srcFlagIdx !== -1 ? args[srcFlagIdx + 1] : null;
+  const targetRoot = args.find((a, i) => !a.startsWith('--') && i !== srcFlagIdx + 1);
+
   if (!targetRoot) {
-    console.error('Usage: documenter analyze-flutter <project-root>');
+    console.error('Usage: documenter analyze-flutter <project-root> [--src <subdir>]');
     process.exit(1);
   }
 
@@ -13,13 +18,16 @@ async function run([targetRoot]) {
   const docsDir = path.join(root, '.documenter', 'analysis');
   fs.mkdirSync(docsDir, { recursive: true });
 
-  const libDir = path.join(root, 'lib');
-  if (!fs.existsSync(libDir)) {
-    console.error(`ERROR: lib/ directory not found at ${root}`);
+  // --src pins the source subfolder; default is lib/
+  const srcDir = srcFlag ? path.resolve(root, srcFlag) : path.join(root, 'lib');
+  if (!fs.existsSync(srcDir)) {
+    console.error(`ERROR: source directory not found: ${srcDir}`);
+    console.error(`  Pass the correct subfolder with --src, e.g.: --src lib`);
     process.exit(1);
   }
+  console.log(`Source dir: ${path.relative(root, srcDir)}`);
 
-  const dartFiles = findDartFiles(libDir);
+  const dartFiles = findDartFiles(srcDir);
   console.log(`Found ${dartFiles.length} Dart files`);
 
   // Try each router type in priority order

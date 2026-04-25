@@ -1,6 +1,7 @@
 {
   "projectName": "",
   "projectType": "web",
+  "sourceDir": "",
   "audience": "end-user",
   "formats": ["md", "pdf", "latex", "html"],
   "style": "typst",

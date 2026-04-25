@@ -10,6 +10,7 @@ Extract from `$ARGUMENTS`:
 - `AUDIENCE` — `end-user` (default) | `admin` | `power-user`
 - `FORMAT` — `md` | `pdf` | `latex` | `html` | `all` (default: `all`)
 - `STYLE` — `typst` (default) | `eisvogel`
+- `SOURCE_DIR` — value of `--src <path>` flag (optional). A path relative to `TARGET_ROOT` that pins exactly which subfolder to analyze (e.g. `lib`, `frontend/src`, `app`). When omitted, auto-detection picks the source root.
 
 ---
 
@@ -28,6 +29,7 @@ Read the current working directory (the project the user has open in Claude Code
 Set `PROJECT_TYPE` = `web` | `flutter` | `both`.
 Set `TARGET_ROOT` = current working directory.
 Set `DOCS_DIR` = `TARGET_ROOT/.documenter/`.
+Set `SOURCE_DIR` = `TARGET_ROOT/<--src value>` if provided, else `TARGET_ROOT` (analyzers will auto-detect the framework subfolder within it).
 
 ---
 
@@ -47,6 +49,7 @@ Set `DOCS_DIR` = `TARGET_ROOT/.documenter/`.
    {
      "projectName": "<PROJECT_NAME>",
      "projectType": "<PROJECT_TYPE>",
+     "sourceDir": "<SOURCE_DIR relative to TARGET_ROOT, or empty string>",
      "audience": "<AUDIENCE>",
      "formats": ["md", "pdf", "latex", "html"],
      "style": "typst",
@@ -55,7 +58,7 @@ Set `DOCS_DIR` = `TARGET_ROOT/.documenter/`.
      "updatedAt": "<ISO date>"
    }
    ```
-   If file already exists, merge with any flags from `$ARGUMENTS` (flags win).
+   If file already exists, merge with any flags from `$ARGUMENTS` (flags win). Once `sourceDir` is saved, it becomes the default for all future runs on this project — no need to pass `--src` again.
 
 3. Print: "▶ Documenting **<PROJECT_NAME>** (<PROJECT_TYPE>) for audience: **<AUDIENCE>**"
 
@@ -66,6 +69,7 @@ Set `DOCS_DIR` = `TARGET_ROOT/.documenter/`.
 Spawn `code-cartographer` agent with:
 - `TARGET_ROOT`
 - `PROJECT_TYPE`
+- `SOURCE_DIR` — the pinned subfolder to analyze (pass `""` if not set)
 - `OUTPUT_DIR` = `DOCS_DIR/analysis/`
 
 Wait for completion. On failure, abort and print the error — analysis is a hard dependency.
