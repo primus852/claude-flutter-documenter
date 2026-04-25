@@ -1,0 +1,24 @@
+# Flutter screenshot manifest
+# Place PNG files in .documenter/screenshots/flutter/
+# and list them here with captions.
+#
+# claude-documenter uses this file when automatic screenshot capture
+# is not possible (no connected device/emulator).
+#
+# Fields:
+#   id:       must match the route id from analysis/routes.json
+#   file:     path relative to .documenter/
+#   caption:  one sentence describing the screen
+#   route:    the Flutter route path
+
+screenshots:
+  - id: home
+    file: screenshots/flutter/home.png
+    caption: "The Home screen showing the app's main dashboard."
+    route: /
+
+  # Add more entries below:
+  # - id: login
+  #   file: screenshots/flutter/login.png
+  #   caption: "The Login screen where users sign in to their account."
+  #   route: /login

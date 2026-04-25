@@ -1,0 +1,12 @@
+{
+  "name": "claude-documenter",
+  "version": "0.1.0",
+  "description": "Generate end-user manuals (MD/PDF/LaTeX) with screenshots and flowcharts from web and Flutter codebases.",
+  "author": {
+    "name": "Torsten Wolter",
+    "email": "findnibbler@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": ["documentation", "manuals", "end-user", "pandoc", "screenshots", "flutter", "web"],
+  "homepage": "https://github.com/torstenwolter/claude-documenter"
+}

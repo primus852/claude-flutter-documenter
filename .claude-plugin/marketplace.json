@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "claude-documenter-marketplace",
+  "version": "1.0.0",
+  "description": "Single-plugin marketplace for claude-documenter",
+  "owner": {
+    "name": "Torsten Wolter",
+    "email": "findnibbler@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "claude-documenter",
+      "description": "Generate end-user manuals (MD/PDF/LaTeX) with screenshots and flowcharts from web and Flutter codebases.",
+      "source": "./",
+      "category": "documentation"
+    }
+  ]
+}
