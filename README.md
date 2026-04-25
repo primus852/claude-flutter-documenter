@@ -32,33 +32,25 @@ All output lands in `.documenter/` inside your project and opens without any bui
 
 ## Installation
 
-### 1. Clone the plugin
+### 1. Add the plugin to Claude Code
 
 ```bash
-git clone https://github.com/primus852/claude-flutter-documenter ~/claude-flutter-documenter
-cd ~/claude-flutter-documenter
-```
-
-### 2. Install dependencies
-
-```bash
-npm install                  # JS analysis CLI deps
-./scripts/install-deps.sh   # optional: installs mmdc via Homebrew
-```
-
-### 3. Register with Claude Code
-
-```bash
-# From a local checkout:
-/plugin marketplace add ~/claude-flutter-documenter
+/plugin marketplace add https://github.com/primus852/claude-flutter-documenter
 /plugin install claude-flutter-documenter
 ```
 
-Once published to the Claude Code marketplace you will be able to install directly:
+### 2. Install optional system dependencies
 
 ```bash
-/plugin install claude-flutter-documenter
+brew install mermaid-cli   # enables SVG diagram export (optional)
 ```
+
+> **For local development** — clone the repo and point the marketplace at your checkout instead:
+> ```bash
+> git clone https://github.com/primus852/claude-flutter-documenter ~/claude-flutter-documenter
+> /plugin marketplace add ~/claude-flutter-documenter
+> /plugin install claude-flutter-documenter
+> ```
 
 ---
 
