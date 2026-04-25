@@ -1,0 +1,17 @@
+[
+  {
+    "id": "counter-interaction",
+    "name": "Counter Interaction",
+    "description": "User increments the counter by pressing the floating action button",
+    "steps": [
+      {
+        "route_id": "home",
+        "action": "View the home screen displaying the counter at zero and the label 'You have pushed the button this many times:'"
+      },
+      {
+        "route_id": "home",
+        "action": "Tap the floating action button (Increment / plus icon) to increase the counter by one"
+      }
+    ]
+  }
+]

@@ -105,6 +105,17 @@ The path is saved in `.documenter/config.json` and becomes the default for all f
 
 ---
 
+## Sample output
+
+The [`sample/`](sample/) directory contains a complete documenter run against the Flutter counter demo app (`flutter create`):
+
+- [`sample/manual/index.md`](sample/manual/index.md) — generated manual entry point
+- [`sample/diagrams/overview.svg`](sample/diagrams/overview.svg) — Mermaid flowchart
+- [`sample/analysis/routes.json`](sample/analysis/routes.json) — extracted routes
+- [`sample/screenshots/home.png`](sample/screenshots/home.png) — captured screenshot
+
+---
+
 ## Output
 
 ```

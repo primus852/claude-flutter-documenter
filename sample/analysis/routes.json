@@ -1,0 +1,12 @@
+[
+  {
+    "id": "home",
+    "path": "/",
+    "title": "Flutter Demo Home Page",
+    "file": "lib/main.dart",
+    "type": "flutter",
+    "forms": [],
+    "buttons": ["Increment"],
+    "nav_links": []
+  }
+]

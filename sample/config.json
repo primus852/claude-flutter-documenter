@@ -1,0 +1,11 @@
+{
+  "projectName": "clean_flutter",
+  "sourceDir": "",
+  "audience": "end-user",
+  "version": "1.0",
+  "contactEmail": "support@example.com",
+  "contactUrl": "https://help.example.com",
+  "locale": "en",
+  "createdAt": "2026-04-25T00:00:00Z",
+  "updatedAt": "2026-04-25T00:00:00Z"
+}

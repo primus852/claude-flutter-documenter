@@ -1,0 +1,5 @@
+screenshots:
+  - id: home
+    file: screenshots/home.png
+    caption: "The Flutter Demo Home Page — the root screen of the app, featuring an increment counter button."
+    route: /
