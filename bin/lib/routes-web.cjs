@@ -14,9 +14,14 @@ async function loadDeps() {
   }
 }
 
-async function run([targetRoot, ...opts]) {
+async function run(args) {
+  // Parse: analyze-web <root> [--src <subdir>]
+  const srcFlagIdx = args.indexOf('--src');
+  const srcFlag = srcFlagIdx !== -1 ? args[srcFlagIdx + 1] : null;
+  const targetRoot = args.find((a, i) => !a.startsWith('--') && i !== srcFlagIdx + 1);
+
   if (!targetRoot) {
-    console.error('Usage: documenter analyze-web <project-root>');
+    console.error('Usage: documenter analyze-web <project-root> [--src <subdir>]');
     process.exit(1);
   }
 
@@ -25,14 +30,22 @@ async function run([targetRoot, ...opts]) {
   const docsDir = path.join(root, '.documenter', 'analysis');
   fs.mkdirSync(docsDir, { recursive: true });
 
-  const framework = detectFramework(root);
+  // --src pins which subfolder to treat as the project root for framework detection
+  const srcRoot = srcFlag ? path.resolve(root, srcFlag) : root;
+  if (srcFlag && !fs.existsSync(srcRoot)) {
+    console.error(`ERROR: source directory not found: ${srcRoot}`);
+    process.exit(1);
+  }
+  if (srcFlag) console.log(`Source dir: ${path.relative(root, srcRoot)}`);
+
+  const framework = detectFramework(srcRoot);
   console.log(`Detected framework: ${framework}`);
 
   let routes = [];
-  if (framework === 'nextjs-app') routes = await extractNextjsApp(root);
-  else if (framework === 'nextjs-pages') routes = await extractNextjsPages(root);
-  else if (framework === 'react-router') routes = await extractReactRouter(root);
-  else routes = await extractHtml(root);
+  if (framework === 'nextjs-app') routes = await extractNextjsApp(srcRoot, root);
+  else if (framework === 'nextjs-pages') routes = await extractNextjsPages(srcRoot, root);
+  else if (framework === 'react-router') routes = await extractReactRouter(srcRoot, root);
+  else routes = await extractHtml(srcRoot, root);
 
   const journeys = inferJourneys(routes);
 
@@ -69,8 +82,8 @@ function detectFramework(root) {
   return 'html';
 }
 
-async function extractNextjsApp(root) {
-  const appDirs = ['app', 'src/app'].map(d => path.join(root, d)).filter(fs.existsSync);
+async function extractNextjsApp(srcRoot, root) {
+  const appDirs = ['app', 'src/app'].map(d => path.join(srcRoot, d)).filter(fs.existsSync);
   if (!appDirs.length) return [];
 
   const routes = [];
@@ -96,8 +109,8 @@ async function extractNextjsApp(root) {
   return routes;
 }
 
-async function extractNextjsPages(root) {
-  const pagesDirs = ['pages', 'src/pages'].map(d => path.join(root, d)).filter(fs.existsSync);
+async function extractNextjsPages(srcRoot, root) {
+  const pagesDirs = ['pages', 'src/pages'].map(d => path.join(srcRoot, d)).filter(fs.existsSync);
   if (!pagesDirs.length) return [];
 
   const routes = [];
@@ -127,9 +140,9 @@ async function extractNextjsPages(root) {
   return routes;
 }
 
-async function extractReactRouter(root) {
+async function extractReactRouter(srcRoot, root) {
   // Find router config files
-  const srcDir = fs.existsSync(path.join(root, 'src')) ? path.join(root, 'src') : root;
+  const srcDir = fs.existsSync(path.join(srcRoot, 'src')) ? path.join(srcRoot, 'src') : srcRoot;
   const allFiles = glob.sync('**/*.{tsx,jsx,ts,js}', {
     cwd: srcDir,
     absolute: true,
@@ -172,14 +185,14 @@ async function extractReactRouter(root) {
   return routes;
 }
 
-async function extractHtml(root) {
+async function extractHtml(srcRoot, root) {
   const htmlFiles = glob.sync('**/*.html', {
-    cwd: root,
+    cwd: srcRoot,
     absolute: true,
     ignore: ['**/node_modules/**'],
   });
   return htmlFiles.slice(0, 20).map(f => {
-    const rel = '/' + path.relative(root, f).replace(/\\/g, '/');
+    const rel = '/' + path.relative(srcRoot, f).replace(/\\/g, '/');
     return {
       id: routeToId(rel),
       path: rel,
