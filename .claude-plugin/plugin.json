@@ -1,6 +1,6 @@
 {
   "name": "flutter-doc",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Generate end-user manuals (Markdown) with screenshots and flowcharts from Flutter codebases.",
   "author": {
     "name": "Torsten Wolter",
