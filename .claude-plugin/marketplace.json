@@ -11,8 +11,12 @@
     {
       "name": "flutter-doc",
       "description": "Generate end-user manuals (Markdown) with screenshots and flowcharts from Flutter codebases.",
-      "source": "./",
-      "category": "documentation"
+      "source": {
+        "source": "url",
+        "url": "https://github.com/primus852/claude-flutter-documenter.git"
+      },
+      "category": "documentation",
+      "homepage": "https://github.com/primus852/claude-flutter-documenter"
     }
   ]
 }
